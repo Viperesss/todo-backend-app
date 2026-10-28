@@ -31,6 +31,12 @@ migrate-create:
 		-dir /migrations \
 		-seq "$(seq)"
 
+env-port-forward:
+	@docker compose up -d port-forwarder
+
+env-port-close:
+	@docker compose down port-forwarder
+
 migrate-up:
 	@make migrate-action action=up
 
