@@ -14,6 +14,7 @@ type Config struct {
 func newConfig() (Config, error) {
 	var config Config
 
+	// читает переменные окружения с префиксом LOGGER
 	if err := envconfig.Process("LOGGER", &config); err != nil {
 		return Config{}, fmt.Errorf("process env config: %w", err)
 	}
