@@ -19,6 +19,9 @@ env-cleanup:
 		echo "Отмена очистки окружения"; \
 	fi
 
+todoapp-run:
+	@docker compose up -d todoapp-container
+
 migrate-create:
 	@if [ -z "$(seq)" ]; then \
 		echo "Отсутствует необходимый параметр seq. Пример: make migrate-create seq=init"; \
