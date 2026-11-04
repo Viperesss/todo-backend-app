@@ -1,5 +1,11 @@
 package users_transport_http
 
+import (
+	"net/http"
+
+	core_http_server "github.com/Viperesss/todo-backend-app/internal/core/transport/http/server"
+)
+
 type UsersHttpHandler struct {
 	usersService UsersService
 }
@@ -10,8 +16,18 @@ type UsersService interface {
 type UsersRepository interface {
 }
 
-func newUsersHandler(usersService UsersService) *UsersHttpHandler {
+func NewUsersHandler(usersService UsersService) *UsersHttpHandler {
 	return &UsersHttpHandler{
 		usersService: usersService,
+	}
+}
+
+func (h *UsersHttpHandler) Routes() []core_http_server.Route {
+	return []core_http_server.Route{
+		{
+			Method:  http.MethodPost,
+			Path:    "/users",
+			Handler: h.CreateUser,
+		},
 	}
 }

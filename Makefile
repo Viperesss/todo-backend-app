@@ -20,7 +20,9 @@ env-cleanup:
 	fi
 
 todoapp-run:
-	@docker compose up -d todoapp-container
+	@export LOGGER_FOLDER=${PROJECT_ROOT}/out/logs && \
+	go mod tidy && \
+	go run cmd/todoapp/main.go
 
 migrate-create:
 	@if [ -z "$(seq)" ]; then \

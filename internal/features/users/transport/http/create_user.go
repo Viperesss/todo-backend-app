@@ -3,8 +3,6 @@ package users_transport_http
 import (
 	"encoding/json"
 	"net/http"
-
-	errordto "github.com/Viperesss/todo-backend-app/internal/core/errors"
 )
 
 type CreateUserRequest struct {
@@ -19,13 +17,13 @@ type CreateUserResponse struct {
 	PhoneNumber *string `json:"phone_number"`
 }
 
-func (h *UsersHttpHandler) CreateUser(w *http.ResponseWriter, r *http.Request) {
+func (h *UsersHttpHandler) CreateUser(w http.ResponseWriter, r *http.Request) {
 	var requestDTO CreateUserRequest
 
 	if err := json.NewDecoder(r.Body).Decode(&requestDTO); err != nil {
-		errDTO := errordto.NewErrDTO(err)
+		// errDTO := errordto.NewErrDTO(err)
 
-		http.Error(*w, errDTO.Time.GoString(), http.StatusBadRequest)
+		// http.Error(*w, errDTO.Time.GoString(), http.StatusBadRequest)
 	}
 
 }
