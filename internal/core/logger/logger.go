@@ -28,17 +28,17 @@ func FromContext(ctx context.Context) *Logger {
 
 func NewLogger(config Config) (*Logger, error) {
 	zapLvl := zap.NewAtomicLevel()
-	if err := zapLvl.UnmarshalText([]byte(config.level)); err != nil {
+	if err := zapLvl.UnmarshalText([]byte(config.Level)); err != nil {
 		return nil, fmt.Errorf("unmarshal log level: %w", err)
 	}
 
-	if err := os.MkdirAll(config.folder, 0755); err != nil {
+	if err := os.MkdirAll(config.Folder, 0755); err != nil {
 		return nil, fmt.Errorf("mkdir log folder: %w", err)
 	}
 
 	timeStamp := time.Now().UTC().Format("2006-01-02T15-04-05.000000")
 	logFilePath := filepath.Join(
-		config.folder,
+		config.Folder,
 		fmt.Sprintf("%s.log", timeStamp),
 	)
 

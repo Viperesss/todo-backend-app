@@ -12,15 +12,16 @@ env-down:
 env-cleanup:
 	@read -p "Очистить все volume файлы окружения? Опасность утери данных. [y/N]: " ans; \
 	if [ "$$ans" = "y" ]; then \
-		docker compose down app-postgres && \
-		rm -rf out/pgdata && \
+		docker compose down -v && \
 		echo "Файлы окружения очищены"; \
 	else \
 		echo "Отмена очистки окружения"; \
 	fi
 
 todoapp-run:
-	@docker compose up -d todoapp-container
+	@export LOGGER_FOLDER=${PROJECT_ROOT}/out/logs && \
+	go mod tidy && \
+	go run cmd/todoapp/main.go
 
 migrate-create:
 	@if [ -z "$(seq)" ]; then \
