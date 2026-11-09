@@ -1,13 +1,15 @@
 package users_transport_http
 
 import (
-	"encoding/json"
 	"net/http"
+
+	core_logger "github.com/Viperesss/todo-backend-app/internal/core/logger"
+	core_http_request "github.com/Viperesss/todo-backend-app/internal/core/transport/http/request"
 )
 
 type CreateUserRequest struct {
-	FullName    string  `json:"full_name"`
-	PhoneNumber *string `json:"phone_number"`
+	FullName    string  `json:"full_name" validate:"required,min=3,max=100"`
+	PhoneNumber *string `json:"phone_number" validate:"omitempty,e164"`
 }
 
 type CreateUserResponse struct {
@@ -18,12 +20,16 @@ type CreateUserResponse struct {
 }
 
 func (h *UsersHttpHandler) CreateUser(w http.ResponseWriter, r *http.Request) {
+	ctx := r.Context()
+	log := core_logger.FromContext(ctx)
+
+	log.Debug("invoke CreateUser handler")
+
 	var requestDTO CreateUserRequest
 
-	if err := json.NewDecoder(r.Body).Decode(&requestDTO); err != nil {
-		// errDTO := errordto.NewErrDTO(err)
+	if err := core_http_request.DecodeAndValidateRequest(r, &requestDTO); err != nil {
 
-		// http.Error(*w, errDTO.Time.GoString(), http.StatusBadRequest)
 	}
 
+	w.WriteHeader(http.StatusOK)
 }

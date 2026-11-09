@@ -7,6 +7,7 @@ import (
 	"net/http"
 
 	core_logger "github.com/Viperesss/todo-backend-app/internal/core/logger"
+	core_http_middleware "github.com/Viperesss/todo-backend-app/internal/core/transport/http/middleware"
 	"go.uber.org/zap"
 )
 
@@ -14,13 +15,16 @@ type HTTPServer struct {
 	mux    *http.ServeMux
 	config Config
 	log    *core_logger.Logger
+
+	middleware []core_http_middleware.Middleware
 }
 
-func NewHTTPServer(cfg Config, log *core_logger.Logger) *HTTPServer {
+func NewHTTPServer(cfg Config, log *core_logger.Logger, middleware ...core_http_middleware.Middleware) *HTTPServer {
 	return &HTTPServer{
-		mux:    http.NewServeMux(),
-		config: cfg,
-		log:    log,
+		mux:        http.NewServeMux(),
+		config:     cfg,
+		log:        log,
+		middleware: middleware,
 	}
 }
 
@@ -30,15 +34,18 @@ func (h *HTTPServer) RegisterAPIRouters(routers ...*APIVersionRouter) {
 
 		h.mux.Handle(
 			prefix+"/",
+			// stripPrefix возвращает обработчик, который обрабатывает HTTP-запросы, удаляя указанный префикс из пути URL-адреса запроса (и RawPath, если он задан) и вызывая обработчик h. stripPrefix обрабатывает запрос пути, который не начинается с префикса
 			http.StripPrefix(prefix, router),
 		)
 	}
 }
 
 func (h *HTTPServer) Run(ctx context.Context) error {
+	MiddlewareMux := core_http_middleware.ChainMiddleware(h.log, h.mux, h.middleware...)
+
 	server := &http.Server{
 		Addr:    h.config.Addr,
-		Handler: h.mux,
+		Handler: MiddlewareMux,
 	}
 
 	// буфферизированный чтобы не блокироваться при запси в канал
@@ -48,7 +55,7 @@ func (h *HTTPServer) Run(ctx context.Context) error {
 	go func() {
 		defer close(ch)
 
-		h.log.Warn("start HTTP server", zap.String("addr", h.config.Addr))
+		h.log.Info("start HTTP server", zap.String("addr", h.config.Addr))
 
 		err := server.ListenAndServe()
 

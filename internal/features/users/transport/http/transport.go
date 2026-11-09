@@ -6,6 +6,7 @@ import (
 	core_http_server "github.com/Viperesss/todo-backend-app/internal/core/transport/http/server"
 )
 
+// Описывает маршруты своей функциональности
 type UsersHttpHandler struct {
 	usersService UsersService
 }
