@@ -17,9 +17,6 @@ type UsersService interface {
 	CreateUser(ctx context.Context, user domain.User) (domain.User, error)
 }
 
-type UsersRepository interface {
-}
-
 func NewUsersHandler(usersService UsersService) *UsersHttpHandler {
 	return &UsersHttpHandler{
 		usersService: usersService,
