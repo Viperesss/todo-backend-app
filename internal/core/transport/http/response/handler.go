@@ -32,8 +32,15 @@ func (h *HTTPResponseHandler) PanicResponse(p any, msg string) {
 	h.errorResponse(statusCode, err, msg)
 }
 
+func (h *HTTPResponseHandler) JSONResponse(responseBody any, statusCode int) {
+	h.rw.WriteHeader(statusCode)
+
+	if err := json.NewEncoder(h.rw).Encode(responseBody); err != nil {
+		h.log.Error("write HTTP response", zap.Error(err))
+	}
+}
+
 func (h *HTTPResponseHandler) ErrorResponse(err error, msg string) {
-	// отдавать статус код ссответсвующий переданной ошибке
 	var (
 		statusCode int
 		logFunc    func(string, ...zap.Field) // общая сигнатура для всех функций логирования
@@ -60,14 +67,10 @@ func (h *HTTPResponseHandler) ErrorResponse(err error, msg string) {
 }
 
 func (h *HTTPResponseHandler) errorResponse(statusCode int, err error, msg string) {
-	h.rw.WriteHeader(statusCode)
-
 	response := map[string]string{
 		"messsage": msg,
 		"error":    err.Error(),
 	}
 
-	if err := json.NewEncoder(h.rw).Encode(response); err != nil {
-		h.log.Error("write HTTP response", zap.Error(err))
-	}
+	h.JSONResponse(response, statusCode)
 }

@@ -1,8 +1,10 @@
 package users_transport_http
 
 import (
+	"context"
 	"net/http"
 
+	"github.com/Viperesss/todo-backend-app/internal/core/domain"
 	core_http_server "github.com/Viperesss/todo-backend-app/internal/core/transport/http/server"
 )
 
@@ -12,6 +14,7 @@ type UsersHttpHandler struct {
 }
 
 type UsersService interface {
+	CreateUser(ctx context.Context, user domain.User) (domain.User, error)
 }
 
 type UsersRepository interface {
