@@ -8,6 +8,7 @@ import (
 	"syscall"
 
 	core_logger "github.com/Viperesss/todo-backend-app/internal/core/logger"
+	core_http_middleware "github.com/Viperesss/todo-backend-app/internal/core/transport/http/middleware"
 	core_http_server "github.com/Viperesss/todo-backend-app/internal/core/transport/http/server"
 	users_transport_http "github.com/Viperesss/todo-backend-app/internal/features/users/transport/http"
 	"go.uber.org/zap"
@@ -27,7 +28,7 @@ func main() {
 	}
 	defer logger.Close()
 
-	logger.Debug("Starting ToDo application")
+	logger.Info("Starting ToDo application")
 
 	usersTransportHTTP := users_transport_http.NewUsersHandler(nil)
 
@@ -39,6 +40,10 @@ func main() {
 	httpServer := core_http_server.NewHTTPServer(
 		core_http_server.NewConfigMust(),
 		logger,
+		core_http_middleware.RequestID(),
+		core_http_middleware.Logger(logger),
+		core_http_middleware.Panic(),
+		core_http_middleware.Trace(),
 	)
 	httpServer.RegisterAPIRouters(apiVersionRouter)
 
