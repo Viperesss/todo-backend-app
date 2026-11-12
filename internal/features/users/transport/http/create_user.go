@@ -40,6 +40,7 @@ func (h *UsersHttpHandler) CreateUser(w http.ResponseWriter, r *http.Request) {
 	newUserDomain, err := h.usersService.CreateUser(ctx, userDomain)
 	if err != nil {
 		responseHandler.ErrorResponse(err, "failed to create user")
+		return
 	}
 
 	responseDTO := respDTOFromDomain(newUserDomain)

@@ -1,4 +1,4 @@
-package user_service
+package users_service
 
 import (
 	"context"
@@ -8,7 +8,6 @@ import (
 
 type UsersService struct {
 	UsersRepository UsersRepository
-	UsersTransport  UsersTransport
 }
 
 type UsersRepository interface {
@@ -18,9 +17,8 @@ type UsersRepository interface {
 type UsersTransport interface {
 }
 
-func NewUsersService(usersRepos UsersRepository, usersTrans UsersTransport) *UsersService {
+func NewUsersService(usersRepos UsersRepository) *UsersService {
 	return &UsersService{
 		UsersRepository: usersRepos,
-		UsersTransport:  usersTrans,
 	}
 }

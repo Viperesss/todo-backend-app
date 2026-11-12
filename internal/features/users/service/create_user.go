@@ -1,4 +1,4 @@
-package user_service
+package users_service
 
 import (
 	"context"
@@ -12,7 +12,7 @@ func (s *UsersService) CreateUser(ctx context.Context, user domain.User) (domain
 		return domain.User{}, fmt.Errorf("validate user domain: %w", err)
 	}
 
-	user, err := s.CreateUser(ctx, user)
+	user, err := s.UsersRepository.CreateUser(ctx, user)
 	if err != nil {
 		return domain.User{}, fmt.Errorf("create user: %w", err)
 	}
