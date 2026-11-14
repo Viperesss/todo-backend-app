@@ -14,12 +14,7 @@ type CreateUserRequest struct {
 	PhoneNumber *string `json:"phone_number" validate:"omitempty,e164"`
 }
 
-type CreateUserResponse struct {
-	ID          int     `json:"id"`
-	Version     int     `json:"version"`
-	FullName    string  `json:"full_name"`
-	PhoneNumber *string `json:"phone_number"`
-}
+type CreateUserResponse UserDTOResponse
 
 func (h *UsersHttpHandler) CreateUser(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
@@ -31,7 +26,6 @@ func (h *UsersHttpHandler) CreateUser(w http.ResponseWriter, r *http.Request) {
 	var requestDTO CreateUserRequest
 	if err := core_http_request.DecodeAndValidateRequest(r, &requestDTO); err != nil {
 		responseHandler.ErrorResponse(err, "failed to decode and validate HTTP request")
-
 		return
 	}
 
@@ -43,20 +37,11 @@ func (h *UsersHttpHandler) CreateUser(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	responseDTO := respDTOFromDomain(newUserDomain)
+	responseDTO := CreateUserResponse(userDTOFromDomain(newUserDomain))
 
 	responseHandler.JSONResponse(responseDTO, http.StatusCreated)
 }
 
 func domainFromReqDTO(user CreateUserRequest) domain.User {
 	return domain.NewUserUninitialized(user.FullName, user.PhoneNumber)
-}
-
-func respDTOFromDomain(userDomain domain.User) CreateUserResponse {
-	return CreateUserResponse{
-		ID:          userDomain.ID,
-		Version:     userDomain.Version,
-		FullName:    userDomain.FullName,
-		PhoneNumber: userDomain.PhoneNumber,
-	}
 }
