@@ -15,6 +15,7 @@ type UsersHttpHandler struct {
 
 type UsersService interface {
 	CreateUser(ctx context.Context, user domain.User) (domain.User, error)
+	GetUsers(ctx context.Context, limit, offset *int) ([]domain.User, error)
 }
 
 func NewUsersHandler(usersService UsersService) *UsersHttpHandler {
@@ -29,6 +30,11 @@ func (h *UsersHttpHandler) Routes() []core_http_server.Route {
 			Method:  http.MethodPost,
 			Path:    "/users",
 			Handler: h.CreateUser,
+		},
+		{
+			Method:  http.MethodGet,
+			Path:    "/users",
+			Handler: h.GetUsersHandler,
 		},
 	}
 }
