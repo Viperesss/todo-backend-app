@@ -12,9 +12,7 @@ type UsersService struct {
 
 type UsersRepository interface {
 	CreateUser(ctx context.Context, user domain.User) (domain.User, error)
-}
-
-type UsersTransport interface {
+	GetUsers(ctx context.Context, limit, offset *int) ([]domain.User, error)
 }
 
 func NewUsersService(usersRepos UsersRepository) *UsersService {
