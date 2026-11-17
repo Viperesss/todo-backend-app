@@ -24,3 +24,12 @@ func userDomainsFromModels(models []UserModel) []domain.User {
 
 	return usersDomain
 }
+
+func userDomainFromModel(model UserModel) domain.User {
+	return domain.NewUser(
+		model.ID,
+		model.Version,
+		model.FullName,
+		model.PhoneNumber,
+	)
+}
