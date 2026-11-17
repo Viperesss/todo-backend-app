@@ -24,13 +24,3 @@ func GetIntQueryParam(r *http.Request, key string) (*int, error) {
 
 	return &num, nil
 }
-
-// func GetQueryParam(r *http.Request, parms ...string) map[string]string {
-// 	result := make(map[string]string)
-// 	for _, parm := range parms {
-// 		row := mux.Vars(r)[parm]
-// 		result[parm] = row
-// 	}
-
-// 	return result
-// }
