@@ -8,7 +8,7 @@ import (
 	core_errors "github.com/Viperesss/todo-backend-app/internal/core/errors"
 )
 
-func (s *UsersService) GetUsers(ctx context.Context, limit, offset *int) ([]domain.User, error) {
+func (s *Service) GetUsers(ctx context.Context, limit, offset *int) ([]domain.User, error) {
 	if limit != nil && *limit < 0 {
 		return nil, fmt.Errorf("limit must be non-negatime: %w", core_errors.ErrInvalidArgument)
 	}

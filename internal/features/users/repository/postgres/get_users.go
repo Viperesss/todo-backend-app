@@ -7,7 +7,7 @@ import (
 	"github.com/Viperesss/todo-backend-app/internal/core/domain"
 )
 
-func (r *UsersRepository) GetUsers(ctx context.Context, limit, offset *int) ([]domain.User, error) {
+func (r *Repository) GetUsers(ctx context.Context, limit, offset *int) ([]domain.User, error) {
 	ctx, cancel := context.WithTimeout(ctx, r.pool.OpTimeout())
 	defer cancel()
 

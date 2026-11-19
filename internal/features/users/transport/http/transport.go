@@ -1,31 +1,24 @@
 package users_transport_http
 
 import (
-	"context"
 	"net/http"
 
-	"github.com/Viperesss/todo-backend-app/internal/core/domain"
 	core_http_server "github.com/Viperesss/todo-backend-app/internal/core/transport/http/server"
+	users_service "github.com/Viperesss/todo-backend-app/internal/features/users/service"
 )
 
 // Описывает маршруты своей функциональности
-type UsersHttpHandler struct {
-	usersService UsersService
+type HttpHandler struct {
+	usersService users_service.UsersService
 }
 
-type UsersService interface {
-	CreateUser(ctx context.Context, user domain.User) (domain.User, error)
-	GetUsers(ctx context.Context, limit, offset *int) ([]domain.User, error)
-	GetUser(ctx context.Context, id int) (domain.User, error)
-}
-
-func NewUsersHandler(usersService UsersService) *UsersHttpHandler {
-	return &UsersHttpHandler{
+func NewUsersHandler(usersService users_service.UsersService) *HttpHandler {
+	return &HttpHandler{
 		usersService: usersService,
 	}
 }
 
-func (h *UsersHttpHandler) Routes() []core_http_server.Route {
+func (h *HttpHandler) Routes() []core_http_server.Route {
 	return []core_http_server.Route{
 		{
 			Method:  http.MethodPost,
