@@ -19,7 +19,7 @@ func (h *UsersHttpHandler) GetUser(w http.ResponseWriter, r *http.Request) {
 
 	userID, err := core_http_utils.GetIntPathValues(r, "id")
 	if err != nil {
-		responseHandler.ErrorResponse(err, "couldn't get user id from path values")
+		responseHandler.ErrorResponse(err, "couldn't get user id from path value")
 		return
 	}
 

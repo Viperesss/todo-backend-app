@@ -2,9 +2,12 @@ package users_postgres_repository
 
 import (
 	"context"
+	"errors"
 	"fmt"
 
 	"github.com/Viperesss/todo-backend-app/internal/core/domain"
+	core_errors "github.com/Viperesss/todo-backend-app/internal/core/errors"
+	"github.com/jackc/pgx/v5"
 )
 
 func (r *UsersRepository) GetUser(ctx context.Context, id int) (domain.User, error) {
@@ -26,7 +29,11 @@ func (r *UsersRepository) GetUser(ctx context.Context, id int) (domain.User, err
 		&userModel.FullName,
 		&userModel.PhoneNumber,
 	); err != nil {
-		return domain.User{}, fmt.Errorf("scan row: %w", err)
+		if errors.Is(err, pgx.ErrNoRows) {
+			return domain.User{}, fmt.Errorf("user with id=`%d`: %w", id, core_errors.ErrNotFound)
+		}
+
+		return domain.User{}, fmt.Errorf("scan error: %w", err)
 	}
 
 	userDomain := userDomainFromModel(userModel)

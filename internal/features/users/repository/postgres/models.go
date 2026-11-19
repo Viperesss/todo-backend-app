@@ -14,12 +14,7 @@ func userDomainsFromModels(models []UserModel) []domain.User {
 	usersDomain := make([]domain.User, len(models))
 
 	for i, model := range models {
-		usersDomain[i] = domain.NewUser(
-			model.ID,
-			model.Version,
-			model.FullName,
-			model.PhoneNumber,
-		)
+		usersDomain[i] = userDomainFromModel(model)
 	}
 
 	return usersDomain
