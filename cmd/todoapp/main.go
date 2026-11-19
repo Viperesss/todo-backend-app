@@ -41,8 +41,8 @@ func main() {
 
 	logger.Debug("Starting feature", zap.String("feature", "users"))
 
-	usersPostgresRepository := users_postgres_repository.NewUsersRepository(pool)
-	usersService := users_service.NewUsersService(usersPostgresRepository)
+	usersPostgresRepository := users_postgres_repository.NewRepository(pool)
+	usersService := users_service.NewService(usersPostgresRepository)
 	usersTransportHTTP := users_transport_http.NewUsersHandler(usersService)
 
 	logger.Debug("initializing HTTP server")
