@@ -1,13 +1,15 @@
 package users_postgres_repository
 
-import core_postgres_pool "github.com/Viperesss/todo-backend-app/internal/core/repository/postgres/pool"
+import (
+	core_postgres_pool "github.com/Viperesss/todo-backend-app/internal/core/repository/postgres/pool"
+)
 
-type UsersRepository struct {
+type Repository struct {
 	pool core_postgres_pool.Pool
 }
 
-func NewUsersRepository(pool core_postgres_pool.Pool) *UsersRepository {
-	return &UsersRepository{
+func NewRepository(pool core_postgres_pool.Pool) *Repository {
+	return &Repository{
 		pool: pool,
 	}
 }

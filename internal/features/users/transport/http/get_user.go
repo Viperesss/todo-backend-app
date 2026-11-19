@@ -10,7 +10,7 @@ import (
 
 type GetUserResponse UserDTOResponse
 
-func (h *UsersHttpHandler) GetUser(w http.ResponseWriter, r *http.Request) {
+func (h *HttpHandler) GetUser(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	log := core_logger.FromContext(ctx)
 	responseHandler := core_http_response.NewHTTPresponseHandler(log, w)
@@ -19,7 +19,7 @@ func (h *UsersHttpHandler) GetUser(w http.ResponseWriter, r *http.Request) {
 
 	userID, err := core_http_utils.GetIntPathValues(r, "id")
 	if err != nil {
-		responseHandler.ErrorResponse(err, "couldn't get user id from path values")
+		responseHandler.ErrorResponse(err, "couldn't get user id from path value")
 		return
 	}
 
