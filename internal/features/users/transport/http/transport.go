@@ -19,7 +19,7 @@ type HttpHandler struct {
 	usersService UsersService
 }
 
-func NewUsersHandler(usersService UsersService) *HttpHandler {
+func NewHandler(usersService UsersService) *HttpHandler {
 	return &HttpHandler{
 		usersService: usersService,
 	}

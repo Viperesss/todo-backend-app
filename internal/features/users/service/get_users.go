@@ -17,7 +17,7 @@ func (s *Service) GetUsers(ctx context.Context, limit, offset *int) ([]domain.Us
 		return nil, fmt.Errorf("offset must be non-negatime: %w", core_errors.ErrInvalidArgument)
 	}
 
-	usersDomain, err := s.UsersRepository.GetUsers(ctx, limit, offset)
+	usersDomain, err := s.usersRepository.GetUsers(ctx, limit, offset)
 	if err != nil {
 		return nil, fmt.Errorf("get users: %w", err)
 	}
