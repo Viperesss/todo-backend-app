@@ -74,3 +74,7 @@ func (h *HTTPResponseHandler) errorResponse(statusCode int, err error, msg strin
 
 	h.JSONResponse(response, statusCode)
 }
+
+func (h *HTTPResponseHandler) NilResponse(statusCode int) {
+	h.rw.WriteHeader(statusCode)
+}
