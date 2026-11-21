@@ -24,5 +24,5 @@ func (h *HttpHandler) DeleteUser(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	responseHandler.NilResponse(http.StatusNoContent)
+	responseHandler.NoContentResponse(http.StatusNoContent)
 }

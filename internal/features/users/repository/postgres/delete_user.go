@@ -3,6 +3,8 @@ package users_postgres_repository
 import (
 	"context"
 	"fmt"
+
+	core_errors "github.com/Viperesss/todo-backend-app/internal/core/errors"
 )
 
 func (r *Repository) DeleteUser(ctx context.Context, id int) error {
@@ -14,9 +16,12 @@ func (r *Repository) DeleteUser(ctx context.Context, id int) error {
 	WHERE id = $1 
 	`
 
-	_, err := r.pool.Exec(ctx, query, id)
+	cmdTag, err := r.pool.Exec(ctx, query, id)
 	if err != nil {
 		return fmt.Errorf("failed to exec query: %w", err)
+	}
+	if cmdTag.RowsAffected() == 0 {
+		return fmt.Errorf("user with id=`%d`: %w", id, core_errors.ErrNotFound)
 	}
 
 	return nil
