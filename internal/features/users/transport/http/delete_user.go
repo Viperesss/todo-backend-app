@@ -13,6 +13,8 @@ func (h *HttpHandler) DeleteUser(w http.ResponseWriter, r *http.Request) {
 	log := core_logger.FromContext(ctx)
 	responseHandler := core_http_response.NewHTTPresponseHandler(log, w)
 
+	log.Debug("invoke DeleteUser handler")
+
 	userId, err := core_http_utils.GetIntPathValues(r, "id")
 	if err != nil {
 		responseHandler.ErrorResponse(err, "couldn't get user id from path value")
