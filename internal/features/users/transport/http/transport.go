@@ -13,6 +13,7 @@ type UsersService interface {
 	GetUsers(ctx context.Context, limit, offset *int) ([]domain.User, error)
 	GetUser(ctx context.Context, id int) (domain.User, error)
 	DeleteUser(ctx context.Context, id int) error
+	PatchUser(ctx context.Context, id int, user domain.UserPatch) (domain.User, error)
 }
 
 // Описывает маршруты своей функциональности
@@ -47,6 +48,11 @@ func (h *HttpHandler) Routes() []core_http_server.Route {
 			Method:  http.MethodDelete,
 			Path:    "/users/{id}",
 			Handler: h.DeleteUser,
+		},
+		{
+			Method:  http.MethodPatch,
+			Path:    "/users/{id}",
+			Handler: h.PatchUser,
 		},
 	}
 }
